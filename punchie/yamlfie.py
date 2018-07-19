@@ -24,7 +24,7 @@ def make_026_fort():
 				temp = u'\u2588'
 				temp.encode('utf8')
 				val += temp
-		if (i < 47) or (i == 51) or (i == 52) or (i == 57) or (i == 58) or (i == 63) or (i == 64):
+		if (i < 44) or (i == 45) or (i == 46) or (i == 51) or (i == 52) or (i == 57) or (i == 58) or (i == 63) or (i == 64):
 			out_file.write(key + '\'' + val + '\'' + '\n')
 
 
@@ -51,6 +51,6 @@ def make_026_comm():
 				temp = u'\u2588'
 				temp.encode('utf8')
 				val += temp
-		if (i < 47) or (i == 51) or (i == 52) or (i == 57) or (i == 58) or (i == 63) or (i == 64):
+		if (i < 44) or (i == 45) or (i == 46) or (i == 51) or (i == 52) or (i == 57) or (i == 58) or (i == 63) or (i == 64):
 			out_file.write(key + '\'' + val + '\'' + '\n')
 

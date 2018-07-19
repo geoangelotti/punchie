@@ -43,7 +43,8 @@ def create_punched(in_str, secret):
 		punched = PunchedCard(empty_card())
 		yaml_in = codecs.open('Yamls/ibm_026_fort.yaml', 'r', encoding='utf8')
 		ibm_026 = yaml.safe_load(yaml_in)
-		for i in range(0, len(line) - 1):
+		line = line.replace('\r', '')
+		for i in range(0, len(line)):
 			key = ''
 			j = ''
 			try:
@@ -51,14 +52,15 @@ def create_punched(in_str, secret):
 					punched.content[1, i + 3] = line[i]
 				key = line[i].upper()
 				if key == ' ':
-					key = ''
-				bcd = ibm_026['\\' + key]
-				for j in range(2, 14):
-					if bcd[j - 2] == '_':
-						pass
-					else:
-						punched.content[j, i + 3] = u'\u2588'
-						punched.content[j, i + 3].encode('utf-8')
+					pass
+				else:
+					bcd = ibm_026['\\' + key]
+					for j in range(2, 14):
+						if bcd[j - 2] == '_':
+							pass
+						else:
+							punched.content[j, i + 3] = u'\u2588'
+							punched.content[j, i + 3].encode('utf-8')
 			except KeyError:
 				sys.stderr.write("Key error on {} or {},{} tuple.\n".format(key.encode('utf8'), j, i))
 		outpath = 'Punched_cards/gen_' + str(datetime.datetime.now().strftime('%H.%M.%S')) + '.' + str(c) + '.puc'
