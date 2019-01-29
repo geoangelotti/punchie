@@ -63,7 +63,7 @@ def create_punched(in_str, secret):
 							punched.content[j, i + 3].encode('utf-8')
 			except KeyError:
 				sys.stderr.write("Key error on {} or {},{} tuple.\n".format(key.encode('utf8'), j, i))
-		outpath = 'Punched_cards/gen_' + str(datetime.datetime.now().strftime('%H.%M.%S')) + '.' + str(c) + '.puc'
+		outpath = 'Output/gen_' + str(datetime.datetime.now().strftime('%H.%M.%S')) + '.' + str(c) + '.puc'
 		out_file = codecs.open(outpath, 'w+', encoding='utf8')
 		for j in range(0, 15):
 			ans = ''
