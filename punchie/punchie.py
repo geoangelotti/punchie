@@ -1,8 +1,14 @@
 import sys
 import os
 import codecs
-import yaml
 import datetime
+
+try:
+	import yaml
+except ImportError:
+	import subprocess
+	subprocess.call(['pip', '--quiet', 'install', 'pyyaml'])
+	import yaml
 
 
 class PunchedCard:
