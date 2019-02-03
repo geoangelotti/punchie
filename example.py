@@ -1,5 +1,8 @@
+#!/usr/bin/env python2
+
 import punchie
 
 punchie.make_yamls()
 
-punchie.create_punched(punchie.get_string("example.f"), 0)
+collection = punchie.Holder('example.f', 'ibm_026_fort', 0)
+collection.write_punched()

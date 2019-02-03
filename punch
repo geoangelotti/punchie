@@ -1,0 +1,18 @@
+#!/usr/bin/env python2
+
+import punchie
+import sys
+
+punchie.make_yamls()
+
+formats = ['cdc', 'dec_026', 'dec_029', 'ge_600', 'ibm_024_rept', 'ibm_024_prog', 'ibm_026_fort', 'ibm_026_comm', 'ibm_029_029', 'ibm_029_ibme', 'ibm_029_ebcd', 'ibm_1401', 'univac_1108']
+
+if len(sys.argv) < 3:
+	print('Usage ./punch <file> <format>')
+	string = 'Formats: '
+	for form in formats:
+		string = string + form + ', '
+	print(string)
+else:
+	collection = punchie.Holder(sys.argv[1], sys.argv[2], 0)
+	collection.write_punched()

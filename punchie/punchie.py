@@ -1,7 +1,6 @@
 import sys
 import os
 import codecs
-import datetime
 
 try:
 	import yaml
@@ -14,6 +13,57 @@ except ImportError:
 class PunchedCard:
 	def __init__(self, pc):
 		self.content = pc
+
+	def print_keypunch(self, outpath):
+		outpath = 'Output/' + outpath + '.puc'
+		out_file = codecs.open(outpath, 'w+', encoding='utf8')
+		for j in range(0, 15):
+			line = ''
+			for i in range(0, 67):
+				line += self.content[j,i]
+			out_file.write(line + '\n')
+
+
+class Holder:
+	def __init__(self, inpath, form, secret):
+		in_str = get_string(inpath)
+		self.in_name = inpath
+		lines = in_str.split('\n')
+		for line in lines:
+			line = line.replace('\r', '')
+			keypunch = PunchedCard(empty_card())
+			yaml_reader = codecs.open('Yamls/' + form + '.yaml', 'r', encoding='utf8')
+			yaml_keys = yaml.safe_load(yaml_reader)
+			for i in range(0, len(line)):
+				key = ''
+				j = ''
+				try:
+					if secret == 0:
+						keypunch.content[1, i + 3] = line[i].upper()
+					key = line[i].upper()
+					if key == ' ':
+						pass
+					else:
+						bcd = yaml_keys['\\' + key]
+						for j in range(2, 14):
+							if bcd[j - 2] == '_':
+								pass
+							else:
+								keypunch.content[j, i + 3] = u'\u2588'
+								keypunch.content[j, i + 3].encode('utf-8')
+				except KeyError:
+					sys.stderr.write("Key error on {} or {},{} tuple.\n".format(key.encode('utf8'), j, i))
+			self.punched_cards.append(keypunch)
+	
+
+	def write_punched(self):
+		i = 0
+		for keypunch in self.punched_cards:
+			keypunch.print_keypunch(self.in_name + '.' + str(i))
+			i += 1
+
+	in_name = ''
+	punched_cards = []
 
 
 def empty_card():
@@ -40,41 +90,3 @@ def get_string(in_f):
 	else:
 		sys.stderr.write("File {} does not exist.\n".format(in_f))
 		return ''
-
-
-def create_punched(in_str, secret):
-	lines = in_str.split('\n')
-	c = 0
-	for line in lines:
-		punched = PunchedCard(empty_card())
-		yaml_in = codecs.open('Yamls/ibm_026_fort.yaml', 'r', encoding='utf8')
-		ibm_026 = yaml.safe_load(yaml_in)
-		line = line.replace('\r', '')
-		for i in range(0, len(line)):
-			key = ''
-			j = ''
-			try:
-				if secret == 0:
-					punched.content[1, i + 3] = line[i]
-				key = line[i].upper()
-				if key == ' ':
-					pass
-				else:
-					bcd = ibm_026['\\' + key]
-					for j in range(2, 14):
-						if bcd[j - 2] == '_':
-							pass
-						else:
-							punched.content[j, i + 3] = u'\u2588'
-							punched.content[j, i + 3].encode('utf-8')
-			except KeyError:
-				sys.stderr.write("Key error on {} or {},{} tuple.\n".format(key.encode('utf8'), j, i))
-		outpath = 'Output/gen_' + str(datetime.datetime.now().strftime('%H.%M.%S')) + '.' + str(c) + '.puc'
-		out_file = codecs.open(outpath, 'w+', encoding='utf8')
-		for j in range(0, 15):
-			ans = ''
-			for i in range(0, 67):
-				ans += punched.content[j,i]
-			# print ans
-			out_file.write(ans + '\n')
-		c += 1
