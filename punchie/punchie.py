@@ -16,12 +16,15 @@ class PunchedCard:
 
 	def print_keypunch(self, outpath):
 		outpath = 'Output/' + outpath + '.puc'
-		out_file = codecs.open(outpath, 'w+', encoding='utf8')
-		for j in range(0, 15):
-			line = ''
-			for i in range(0, 67):
-				line += self.content[j,i]
-			out_file.write(line + '\n')
+		try:
+			out_file = codecs.open(outpath, 'w+', encoding='utf8')
+			for j in range(0, 15):
+				line = ''
+				for i in range(0, 67):
+					line += self.content[j,i]
+				out_file.write(line + '\n')
+		except IOError:
+			sys.stderr.write("Cannot write {}.\n".format(outpath))
 
 
 class Holder:
@@ -31,30 +34,35 @@ class Holder:
 		lines = in_str.split('\n')
 		for line in lines:
 			line = line.replace('\r', '')
-			keypunch = PunchedCard(empty_card())
-			yaml_reader = codecs.open('Yamls/' + form + '.yaml', 'r', encoding='utf8')
-			yaml_keys = yaml.safe_load(yaml_reader)
-			for i in range(0, len(line)):
-				key = ''
-				j = ''
+			while len(line) > 0:
+				writen_line = line[0 :64]
+				keypunch = PunchedCard(empty_card())
 				try:
-					if secret == 0:
-						keypunch.content[1, i + 3] = line[i].upper()
-					key = line[i].upper()
-					if key == ' ':
-						pass
-					else:
-						bcd = yaml_keys['\\' + key]
-						for j in range(2, 14):
-							if bcd[j - 2] == '_':
+					yaml_reader = codecs.open('Yamls/' + form + '.yaml', 'r', encoding='utf8')
+					yaml_keys = yaml.safe_load(yaml_reader)
+					for i in range(0, len(writen_line)):
+						key = ''
+						j = ''
+						try:
+							if secret == 0:
+								keypunch.content[1, i + 3] = writen_line[i].upper()
+							key = writen_line[i].upper()
+							if key == ' ':
 								pass
 							else:
-								keypunch.content[j, i + 3] = u'\u2588'
-								keypunch.content[j, i + 3].encode('utf-8')
-				except KeyError:
-					sys.stderr.write("Key error on {} or {},{} tuple.\n".format(key.encode('utf8'), j, i))
-			self.punched_cards.append(keypunch)
-	
+								bcd = yaml_keys['\\' + key]
+								for j in range(2, 14):
+									if bcd[j - 2] == '_':
+										pass
+									else:
+										keypunch.content[j, i + 3] = u'\u2588'
+										keypunch.content[j, i + 3].encode('utf-8')
+						except KeyError:
+							sys.stderr.write("Key error on {} or {},{} tuple.\n".format(key.encode('utf8'), j, i))
+					self.punched_cards.append(keypunch)
+				except IOError:
+					sys.stderr.write("Format {} not valid.\n".format(form))
+				line = line[64 : len(line)]
 
 	def write_punched(self):
 		i = 0

@@ -40,11 +40,11 @@ def __make_triple_line(target, languages):
 		i += 1
 
 
-def __get_puc(file):
+def __get_puc(in_file):
 	punched_card = {}
 	y = 0
 	x = 0
-	for line in file:
+	for line in in_file:
 		x = 0
 		for ch in line:
 			if ch != '\n':
