@@ -4,13 +4,13 @@
 
 A project that handles ye old Punched cards based on http://homepage.divms.uiowa.edu/~jones/cards/codes.html.
 
-Using Python2 you can transform strings to Punched cards (keypunches).
+Using Python3 you can transform strings to Punched cards (keypunches).
 
 _I suggest you use a [Virtual Environment](https://virtualenv.pypa.io/en/stable/)._
 
 ### Execution
-1. Set up the Python2 Virtual Environment.  
-`virtualenv -p python2 venv`
+1. Set up the Python3 Virtual Environment.  
+`virtualenv -p python3 venv`
 2. Activate it.     
 `source venv/bin/activate`  
 3. Run the executable.  

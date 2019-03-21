@@ -48,7 +48,7 @@ def __get_puc(in_file):
 		x = 0
 		for ch in line:
 			if ch != '\n':
-				punched_card[y, x] = ch.encode('utf8')
+				punched_card[y, x] = ch
 			x += 1
 		y += 1
 	return x, y, punched_card
@@ -56,7 +56,7 @@ def __get_puc(in_file):
 
 def __write_yaml(x, y, punched_card, out_file, level, contains):
 	for i in range(5, x - 2):
-		key = '\\' + punched_card[level, i].decode('utf8') + ': '
+		key = '\\' + punched_card[level, i] + ': '
 		val = ''
 		for j in range(2 + contains, y - 1):
 			if punched_card[j, i] == ' ':
