@@ -14,13 +14,13 @@ _I suggest you use a [Virtual Environment](https://virtualenv.pypa.io/en/stable/
 2. Activate it.     
 `source venv/bin/activate`  
 3. Run the executable.  
-`./punch <file> <format>`
+`./punch -i <file> -f <format>`
 
 _The formats are cdc, dec_026, dec_029, ge_600, ibm_024_rept, ibm_024_prog, ibm_026_fort, ibm_026_comm, ibm_029_029, ibm_029_ibme, ibm_029_ebcd, ibm_1401, univac_1108_
 
 ### Example
 Run the example script.  
-`./example.py`
+`python example.py`
 
 Deactivate the Virtual Environment when you finish it.    
 `deactivate`
