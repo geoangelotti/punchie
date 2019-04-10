@@ -6,11 +6,9 @@ import getopt
 
 punchie.make_yamls()
 
-formats = ['cdc', 'dec_026', 'dec_029', 'ge_600', 'ibm_024_rept', 'ibm_024_prog', 'ibm_026_fort', 'ibm_026_comm', 'ibm_029_029', 'ibm_029_ibme', 'ibm_029_ebcd', 'ibm_1401', 'univac_1108']
+formats = ','.join(['cdc', 'dec_026', 'dec_029', 'ge_600', 'ibm_024_rept', 'ibm_024_prog', 'ibm_026_fort', 'ibm_026_comm', 'ibm_029_029', 'ibm_029_ibme', 'ibm_029_ebcd', 'ibm_1401', 'univac_1108'])
 
-usage_string = 'Usage ./punch -i <file> -f <format>\nFormats: '
-for form in formats:
-	usage_string = usage_string + form + ', '
+usage_string = f'Usage ./punch -i <file> -f <format>\nFormats: {formats}'
 
 try:
 	form = ''

@@ -15,16 +15,16 @@ class PunchedCard:
 		self.content = pc
 
 	def print_keypunch(self, outpath):
-		outpath = 'Output/' + outpath + '.puc'
+		outpath = f'Output/{outpath}.puc'
 		try:
 			out_file = codecs.open(outpath, 'w+', encoding='utf8')
 			for j in range(0, 15):
 				line = ''
 				for i in range(0, 67):
 					line += self.content[j,i]
-				out_file.write(line + '\n')
+				out_file.write(f'{line}\n')
 		except IOError:
-			sys.stderr.write("Cannot write {}.\n".format(outpath))
+			sys.stderr.write(f"Cannot write {outpath}.\n")
 
 
 class Holder:
@@ -38,7 +38,7 @@ class Holder:
 				writen_line = line[0 :64]
 				keypunch = PunchedCard(empty_card())
 				try:
-					yaml_reader = codecs.open('Yamls/' + form + '.yaml', 'r', encoding='utf8')
+					yaml_reader = codecs.open(f'Yamls/{form}.yaml', 'r', encoding='utf8')
 					yaml_keys = yaml.safe_load(yaml_reader)
 					for i in range(0, len(writen_line)):
 						key = ''
@@ -50,7 +50,7 @@ class Holder:
 							if key == ' ':
 								pass
 							else:
-								bcd = yaml_keys['\\' + key]
+								bcd = yaml_keys[f'\\{key}']
 								for j in range(2, 14):
 									if bcd[j - 2] == '_':
 										pass
@@ -58,16 +58,16 @@ class Holder:
 										keypunch.content[j, i + 3] = u'\u2588'
 										keypunch.content[j, i + 3].encode('utf-8')
 						except KeyError:
-							sys.stderr.write("Key error on {} or {},{} tuple.\n".format(key.encode('utf8'), j, i))
+							sys.stderr.write(f"Key error on {key.encode('utf8')} or {j},{i} tuple.\n")
 					self.punched_cards.append(keypunch)
 				except IOError:
-					sys.stderr.write("Format {} not valid.\n".format(form))
+					sys.stderr.write(f"Format {form} not valid.\n")
 				line = line[64 : len(line)]
 
 	def write_punched(self):
 		i = 0
 		for keypunch in self.punched_cards:
-			keypunch.print_keypunch(self.in_name + '.' + str(i))
+			keypunch.print_keypunch(f'{self.in_name}.{str(i)}')
 			i += 1
 
 	in_name = ''
@@ -96,5 +96,5 @@ def get_string(in_f):
 			string += line
 		return string
 	else:
-		sys.stderr.write("File {} does not exist.\n".format(in_f))
+		sys.stderr.write(f"File {in_f} does not exist.\n")
 		return ''
