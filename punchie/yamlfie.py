@@ -1,6 +1,7 @@
 import codecs
 
 
+# Create all the yaml resource files
 def make_yamls():
 	__make_single_line('cdc')
 	__make_single_line('dec_026')
@@ -13,6 +14,7 @@ def make_yamls():
 	__make_single_line('univac_1108')
 
 
+# Create yaml resource file from single puc file
 def __make_single_line(target):
 	in_file = codecs.open(f'Punched_cards/{target}.puc', encoding='utf8', mode='r')
 	x, y, punched_card = __get_puc(in_file)
@@ -20,6 +22,7 @@ def __make_single_line(target):
 	__write_yaml(x, y, punched_card, out_file, 0, 1)
 
 
+# Create yaml resource file from dual puc file
 def __make_double_line(target, languages):
 	in_file = codecs.open(f'Punched_cards/{target}.puc', encoding='utf8', mode='r')
 	x, y, punched_card = __get_puc(in_file)
@@ -30,6 +33,7 @@ def __make_double_line(target, languages):
 		i += 1
 
 
+# Create yaml resource file from triple puc file
 def __make_triple_line(target, languages):
 	in_file = codecs.open(f'Punched_cards/{target}.puc', encoding='utf8', mode='r')
 	x, y, punched_card = __get_puc(in_file)
@@ -40,6 +44,7 @@ def __make_triple_line(target, languages):
 		i += 1
 
 
+# Read from file punch char data and write it on a dictionary
 def __get_puc(in_file):
 	punched_card = {}
 	y = 0
