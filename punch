@@ -6,28 +6,30 @@ import getopt
 
 punchie.make_yamls()
 
-formats = ','.join(['cdc', 'dec_026', 'dec_029', 'ge_600', 'ibm_024_rept', 'ibm_024_prog', 'ibm_026_fort', 'ibm_026_comm', 'ibm_029_029', 'ibm_029_ibme', 'ibm_029_ebcd', 'ibm_1401', 'univac_1108'])
+formats = ','.join(['cdc', 'dec_026', 'dec_029', 'ge_600', 'ibm_024_rept', 'ibm_024_prog', 'ibm_026_fort',
+                    'ibm_026_comm', 'ibm_029_029', 'ibm_029_ibme', 'ibm_029_ebcd', 'ibm_1401', 'univac_1108'])
 
 usage_string = f'Usage ./punch -i <file> -f <format>\nFormats: {formats}'
 
 try:
-	form = ''
-	secret = 0
-	infile = ''
-	sys.argv.pop(0)
-	ops, args = getopt.getopt(sys.argv, 'i:f:h', ['--infile', '--form', '--help'])
-	for op, arg in ops:
-		if op in ['-h', '--help']:
-			print(usage_string)
-		elif op in ['-f', '--form']:
-			form = arg
-		elif op in ['-i', '--infile']:
-			infile = arg
-	if (form == '') or (infile == ''):
-		sys.stderr.write(usage_string)
-		sys.exit()
-	collection = punchie.Holder(infile, form, secret)
-	collection.write_punched()
+    form = ''
+    secret = 0
+    infile = ''
+    sys.argv.pop(0)
+    ops, args = getopt.getopt(
+        sys.argv, 'i:f:h', ['--infile', '--form', '--help'])
+    for op, arg in ops:
+        if op in ['-h', '--help']:
+            print(usage_string)
+        elif op in ['-f', '--form']:
+            form = arg
+        elif op in ['-i', '--infile']:
+            infile = arg
+    if (form == '') or (infile == ''):
+        sys.stderr.write(usage_string)
+        sys.exit()
+    collection = punchie.Holder(infile, form, secret)
+    collection.write_punched()
 
 except getopt.GetoptError:
-	sys.stderr.write(usage_string)
+    sys.stderr.write(usage_string)
